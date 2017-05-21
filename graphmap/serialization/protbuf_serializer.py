@@ -1,6 +1,6 @@
 import graphmap.imagetree
 import graphmap.treemap
-import imagetree_pb2
+from . import imagetree_pb2
 
 
 def serialize_list_of_nodes_to_proto_forest(list_of_imagetree_nodes):
@@ -39,8 +39,8 @@ def convert_imagetree_to_protobuf_strings(input_imagetree):
     """
     filename_nodename_node_dictionary = input_imagetree.create_node_dictionary()
     filename_protobuf_string_map = {}
-    for filename in filename_nodename_node_dictionary.iterkeys():
-        list_of_nodes = list(filename_nodename_node_dictionary[filename].itervalues())
+    for filename in filename_nodename_node_dictionary.keys():
+        list_of_nodes = list(filename_nodename_node_dictionary[filename].values())
         proto_forest = serialize_list_of_nodes_to_proto_forest(list_of_nodes)
         filename_protobuf_string_map[filename] = proto_forest.SerializeToString()
     return filename_protobuf_string_map

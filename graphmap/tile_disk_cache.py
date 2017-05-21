@@ -7,8 +7,8 @@ import random
 import shutil
 import string
 
-import imagetree
-import utilities
+from . import imagetree
+from . import utilities
 from PIL import Image
 
 
@@ -33,7 +33,7 @@ def save_image_to_disk(file_path, pil_image):
     if not os.path.isdir(directory_to_save):
         utilities.mkdir_p(directory_to_save)
     pil_image.save(file_path, "JPEG")
-    print('Saved image to file ', file_path)
+    print(('Saved image to file ', file_path))
 
 
 def to_valid_filename(link):
@@ -55,11 +55,11 @@ class TileCache:
         self.verbose = verbose
         if not os.path.isdir(self.cache_dir):
             os.mkdir(self.cache_dir)
-            print 'Created cache directory %s' \
-                  % os.path.join(os.path.abspath(__file__), self.cache_dir)
+            print('Created cache directory %s' \
+                  % os.path.join(os.path.abspath(__file__), self.cache_dir))
         else:
             self.cache_count = self.count_files_in_disk()
-            print('Cache dir ', self.cache_dir, ' already exists, current no. of files ', self.cache_count)
+            print(('Cache dir ', self.cache_dir, ' already exists, current no. of files ', self.cache_count))
 
     def cache_burst(self):
         print('Cache burst')
@@ -84,10 +84,10 @@ class TileCache:
         return sum(len(files) for r, d, files in os.walk(self.cache_dir))
 
     def remove_random(self):
-        path, dirs, files = os.walk(self.cache_dir).next()
+        path, dirs, files = next(os.walk(self.cache_dir))
         chosen_file = random.choice(files)
         if self.verbose:
-            print('Removing file randomly ', chosen_file)
+            print(('Removing file randomly ', chosen_file))
         os.remove(chosen_file)
         self.cache_count -= 1
 
@@ -116,7 +116,7 @@ class TileCache:
         """
         file_path = self.image_tree_args_to_path(image_tree, resolution)
         if self.verbose:
-            print('file path is ', file_path, ' count is ', self.cache_count)
+            print(('file path is ', file_path, ' count is ', self.cache_count))
         return os.path.isfile(file_path)
 
     def get_image(self, image_tree, resolution):

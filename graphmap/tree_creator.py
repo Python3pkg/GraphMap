@@ -1,11 +1,11 @@
-import constants
-import custom_errors
-import imagetree
-import serializer
-import utilities
-import imagevalue
-from graph_helpers import NodeLink
-import result
+from . import constants
+from . import custom_errors
+from . import imagetree
+from . import serializer
+from . import utilities
+from . import imagevalue
+from .graph_helpers import NodeLink
+from . import result
 
 
 def create_new_from_old_and_save(old_root_link, quad_key, image_link, name, filename):
@@ -42,7 +42,7 @@ def create_tree_from_old(filename, image_link, name, old_root_link, quad_key):
     :type filename: str
     :rtype : imagetree.ImageTree
     """
-    print('Inserting {} with name {}@{} into root node {}'.format(image_link, name, filename, old_root_link))
+    print(('Inserting {} with name {}@{} into root node {}'.format(image_link, name, filename, old_root_link)))
     old_tree = serializer.load_link_new_serializer(old_root_link)
     new_tree_creator = create_new_from_old_insert_jpg \
         if utilities.is_image_file(image_link) \

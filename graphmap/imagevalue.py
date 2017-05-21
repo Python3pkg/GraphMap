@@ -1,9 +1,9 @@
-import cStringIO
-import urllib
+import io
+import urllib.request, urllib.parse, urllib.error
 
 import numpy as np
 import pylru
-import utilities
+from . import utilities
 from PIL import Image
 
 
@@ -13,7 +13,7 @@ def fetch_image_from_url(url):
     :rtype Image.Image:
     """
     if utilities.url_exists(url):
-        img_stream = cStringIO.StringIO(urllib.urlopen(url).read())
+        img_stream = io.StringIO(urllib.request.urlopen(url).read())
         pil_image = Image.open(img_stream)
         return pil_image
     return Image.new("RGB", size=(256, 266), color='black')

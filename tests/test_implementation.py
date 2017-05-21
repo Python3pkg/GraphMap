@@ -325,7 +325,7 @@ class ProtobufSerializationTest(unittest.TestCase):
     def test_converts_list_of_imagetree_nodes_into_protbuf_forest(self):
         sample_tree = TestImageTree.create_one_high_tree()
         filename_to_node_map = sample_tree.create_node_dictionary()
-        list_of_nodes = list(filename_to_node_map[sample_tree.filename].itervalues())
+        list_of_nodes = list(filename_to_node_map[sample_tree.filename].values())
 
         protobuf_forest = protbuf_serializer.serialize_list_of_nodes_to_proto_forest(list_of_nodes)
         self.assertEqual(5, len(protobuf_forest.forest))
@@ -337,7 +337,7 @@ class ProtobufSerializationTest(unittest.TestCase):
         serialized_string = protbuf_serializer.serialize_filename(sample_tree)
         deserialized_map = protbuf_serializer.deserialize_to_name_to_imagetree_node_map(serialized_string, '', None)
         self.assertEqual(sample_tree.count_nodes(), len(deserialized_map))
-        self.assertEqual(sorted(sample_tree.select(lambda k: k.name)), sorted(deserialized_map.iterkeys()))
+        self.assertEqual(sorted(sample_tree.select(lambda k: k.name)), sorted(deserialized_map.keys()))
 
     def test_select(self):
         sample_tree = TestImageTree.create_one_high_tree()

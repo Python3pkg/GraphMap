@@ -1,7 +1,7 @@
-import custom_errors
-import graph_helpers
-import result
-import tree_creator
+from . import custom_errors
+from . import graph_helpers
+from . import result
+from . import tree_creator
 
 
 class GraphMap:

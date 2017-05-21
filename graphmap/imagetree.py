@@ -1,17 +1,17 @@
-from __future__ import print_function
 
-import constants
-import imagevalue
+
+from . import constants
+from . import imagevalue
 import numpy as np
-import pixel_approximator
-import serializer
-import standard_pixel
-import utilities
+from . import pixel_approximator
+from . import serializer
+from . import standard_pixel
+from . import utilities
 from PIL import Image
-from custom_errors import NodeNotFoundException
-import constants
-import custom_errors
-from graph_helpers import NodeLink, QuadKey
+from .custom_errors import NodeNotFoundException
+from . import constants
+from . import custom_errors
+from .graph_helpers import NodeLink, QuadKey
 
 
 def empty_image_tree(name, serializer, filename):
@@ -39,7 +39,7 @@ def get_child_array(im_array, child_index):
         return im_array[resolution / 2:, :resolution / 2, :]
     if child_index == 3:
         return im_array[resolution / 2:, resolution / 2:, :]
-    raise ('Invalid index for child ' + str(child_index))
+    raise 'Invalid index for child '
 
 
 def image_at_quad_key(input_image, resolution, quad_key):
@@ -459,7 +459,7 @@ class ImageTree:
         """
         nodename_to_output_map = {}
         self.add_to_dictionary_function(function, nodename_to_output_map=nodename_to_output_map)
-        return list(nodename_to_output_map.itervalues())
+        return list(nodename_to_output_map.values())
 
     def get_pil_image_at_xyz(self, x, y, z, resolution):
         """

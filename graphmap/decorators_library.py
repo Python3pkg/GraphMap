@@ -1,7 +1,7 @@
 """
  Decorators from https://wiki.python.org/moin/PythonDecoratorLibrary
 """
-from Queue import Queue
+from queue import Queue
 from threading import Thread
 import threading, sys, traceback
 import functools, logging
@@ -10,14 +10,14 @@ import time
 
 def dump_args(func):
     "This decorator dumps out the arguments passed to a function before calling it"
-    argnames = func.func_code.co_varnames[:func.func_code.co_argcount]
-    fname = func.func_name
+    argnames = func.__code__.co_varnames[:func.__code__.co_argcount]
+    fname = func.__name__
 
     @functools.wraps(func)
     def echo_func(*args, **kwargs):
-        print fname, ":", ', '.join(
+        print(fname, ":", ', '.join(
             '%s=%r' % entry
-            for entry in zip(argnames, args) + kwargs.items())
+            for entry in list(zip(argnames, args)) + list(kwargs.items())))
         return func(*args, **kwargs)
 
     return echo_func
@@ -77,19 +77,19 @@ if __name__ == '__main__':
     deco_result = long_process.start(12)
 
     for i in range(20):
-        print i
+        print(i)
         time.sleep(1)
 
         if deco_result.is_done():
-            print "deco_result {0}".format(deco_result.get_deco_result())
+            print("deco_result {0}".format(deco_result.get_deco_result()))
 
     deco_result2 = long_process.start(13)
 
     try:
-        print "deco_result2 {0}".format(deco_result2.get_deco_result())
+        print("deco_result2 {0}".format(deco_result2.get_deco_result()))
 
     except asynchronous.NotYetDoneException as ex:
-        print ex.message
+        print(ex.message)
 
 log = logging.getLogger(__name__)
 log.setLevel(logging.DEBUG)
@@ -143,18 +143,18 @@ def lazy_thunkify(f):
             try:
                 func_deco_result = f(*args, **kwargs)
                 deco_result[0] = func_deco_result
-            except Exception, e:
+            except Exception as e:
                 exc[0] = True
                 exc[1] = sys.exc_info()
-                print "Lazy thunk has thrown an exception (will be raised on thunk()):\n%s" % (
-                    traceback.format_exc())
+                print("Lazy thunk has thrown an exception (will be raised on thunk()):\n%s" % (
+                    traceback.format_exc()))
             finally:
                 wait_event.set()
 
         def thunk():
             wait_event.wait()
             if exc[0]:
-                raise exc[1][0], exc[1][1], exc[1][2]
+                raise exc[1][0](exc[1][1]).with_traceback(exc[1][2])
 
             return deco_result[0]
 
@@ -171,7 +171,7 @@ def time_dec(func):
         t = time.time()
         res = func(*arg)
         time_taken_msec = int((time.time() - t) * 10 ** 3)
-        print('Time taken by function ', func.func_name, ' is :', time_taken_msec, 'ms')
+        print(('Time taken by function ', func.__name__, ' is :', time_taken_msec, 'ms'))
         return res
 
     return wrapper

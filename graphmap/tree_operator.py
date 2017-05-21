@@ -1,6 +1,6 @@
-import constants
-import imagetree
-import transforms
+from . import constants
+from . import imagetree
+from . import transforms
 from enum import Enum
 
 
@@ -16,7 +16,7 @@ operation_to_string_map = {
     Operation.MirrorVertical: 'mirrorv'
 }
 
-string_to_operator_map = dict((string, operator) for operator, string in operation_to_string_map.iteritems())
+string_to_operator_map = dict((string, operator) for operator, string in operation_to_string_map.items())
 
 operator_to_transform_map = {
     Operation.Rotate90: transforms.rotate_90_transform,

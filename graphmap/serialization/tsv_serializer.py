@@ -49,8 +49,8 @@ def convert_imagetree_to_tsv_string_dictionary(input_imagetree):
     """
     filename_nodename_node_dictionary = input_imagetree.create_node_dictionary()
     filename_tsvencoded_string_map = {}
-    for filename in filename_nodename_node_dictionary.iterkeys():
-        list_of_nodes = filename_nodename_node_dictionary[filename].itervalues()
+    for filename in filename_nodename_node_dictionary.keys():
+        list_of_nodes = iter(filename_nodename_node_dictionary[filename].values())
         serialized_string = serialize_list_of_nodes(list_of_nodes)
         filename_tsvencoded_string_map[filename] = serialized_string
     return filename_tsvencoded_string_map
@@ -67,7 +67,7 @@ def save_tree(input_imagetree):
     :type input_imagetree: graphmap.imagetree.ImageTree
     """
     filename_tsvencoded_string_map = convert_imagetree_to_tsv_string_dictionary(input_imagetree)
-    for filename, serialized_sring in filename_tsvencoded_string_map.iteritems():
+    for filename, serialized_sring in filename_tsvencoded_string_map.items():
         graphmap.utilities.put_contents(serialized_sring, filename)
 
 

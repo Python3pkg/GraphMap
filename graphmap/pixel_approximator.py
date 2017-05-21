@@ -1,5 +1,5 @@
 from enum import Enum
-import standard_pixel
+from . import standard_pixel
 
 
 def simple_average_pixels(pixels_list):

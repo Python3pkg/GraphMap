@@ -1,15 +1,15 @@
-from __future__ import print_function
+
 
 import argparse
 import ntpath
 import time
 
-import azure_image_tree
-import imagetree
-import tree_viewer
+from . import azure_image_tree
+from . import imagetree
+from . import tree_viewer
 import matplotlib.pyplot as plt
-import serializer
-import utilities
+from . import serializer
+from . import utilities
 
 
 def show(tree, resolution, quad_key=None):

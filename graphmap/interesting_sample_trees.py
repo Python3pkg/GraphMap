@@ -1,7 +1,7 @@
-import constants
-import imagetree
-import tree_operator
-import serializer
+from . import constants
+from . import imagetree
+from . import tree_operator
+from . import serializer
 
 
 def red_pixel_tree(filename, serializer):

@@ -1,7 +1,7 @@
 import os
 
-import custom_errors
-import utilities
+from . import custom_errors
+from . import utilities
 
 first_container = 'firstnodes'
 first_storage_account = 'artmapstore'
@@ -45,4 +45,4 @@ def upload_to_blob_name(file_to_store, blob_name):
     block_blob_service = BlockBlobService(account_name=first_storage_account, account_key=read_key)
     block_blob_service.create_blob_from_path(container_name=first_container,
                                              blob_name=blob_name, file_path=file_to_store)
-    print('Saved to azure the file ', file_to_store, '. Remote path = ', blob_name)
+    print(('Saved to azure the file ', file_to_store, '. Remote path = ', blob_name))

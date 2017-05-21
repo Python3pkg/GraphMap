@@ -1,8 +1,8 @@
-import imagevalue
+from . import imagevalue
 from PIL import Image
-from serialization import imagetree_pb2
+from .serialization import imagetree_pb2
 import numpy as np
-import constants
+from . import constants
 
 
 class Pixel(imagevalue.ImageValue):

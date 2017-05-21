@@ -1,8 +1,8 @@
 import time
 
-import serializer
-import utilities
-import serialization.protbuf_serializer
+from . import serializer
+from . import utilities
+from . import serialization.protbuf_serializer
 
 
 class TreeMap:
@@ -36,11 +36,11 @@ class TreeMap:
         """
         start_time = time.time()
         serialized_string = utilities.get_contents_of_file(filename)
-        print('Deserializing string with lenght ', len(serialized_string))
+        print(('Deserializing string with lenght ', len(serialized_string)))
         name_to_image_tree_node_map = serialization.protbuf_serializer.deserialize_to_name_to_imagetree_node_map(serialized_string,
                                                                                                                  serializer)
         deserialization_time_sec = time.time() - start_time
         if deserialization_time_sec > 0:
-            print('Total time taken to deserialize ', filename, ' is ', round((deserialization_time_sec), ndigits=4), ' seconds')
-            print('Rate of deserialization is ', round(len(name_to_image_tree_node_map)/deserialization_time_sec, ndigits=4),' lines/sec')
+            print(('Total time taken to deserialize ', filename, ' is ', round((deserialization_time_sec), ndigits=4), ' seconds'))
+            print(('Rate of deserialization is ', round(len(name_to_image_tree_node_map)/deserialization_time_sec, ndigits=4),' lines/sec'))
         return TreeMap(name_to_image_tree_node_map=name_to_image_tree_node_map)

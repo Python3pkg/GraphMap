@@ -1,6 +1,6 @@
 import os
 import tinys3
-import constants
+from . import constants
 
 key_filename = 'rootkey.csv'
 if os.path.isfile(key_filename):

@@ -5,11 +5,11 @@ import os
 import platform
 import random
 import string
-import urllib2
-from StringIO import StringIO
+import urllib.request, urllib.error, urllib.parse
+from io import StringIO
 
-import alpha_conversion
-import constants
+from . import alpha_conversion
+from . import constants
 import numpy as np
 from PIL import Image
 
@@ -77,7 +77,7 @@ def format_node_address(filename, node_name):
 
 
 def get_contents_of_file(filename):
-    print('Getting contents from ', filename)
+    print(('Getting contents from ', filename))
     file_opener = gzip.open if is_gzip(filename) else open
     read_mode = 'rb' if is_protbuf_file(filename) else 'r'
     if os.path.isfile(filename):
@@ -85,9 +85,9 @@ def get_contents_of_file(filename):
             return f.read()
     if not is_web_link(filename):
         raise Exception('Could not find file locally and it does not seem to be a url', filename)
-    request = urllib2.Request(filename)
+    request = urllib.request.Request(filename)
     request.add_header('Accept-encoding', 'gzip')
-    response = urllib2.urlopen(request)
+    response = urllib.request.urlopen(request)
     buf = StringIO(response.read())
     if is_gzip(filename):
         f = gzip.GzipFile(fileobj=buf)
@@ -197,10 +197,10 @@ def is_gzip(filename):
 
 
 def put_contents(content, filename):
-    print('Putting contents to', filename)
+    print(('Putting contents to', filename))
     if is_web_link(filename):
         write_filename = filename.rsplit('/', 1)[-1]
-        print('Local write filename ', write_filename)
+        print(('Local write filename ', write_filename))
     else:
         write_filename = filename
     file_opener = gzip.open if is_gzip(filename) else open
@@ -208,11 +208,11 @@ def put_contents(content, filename):
     with file_opener(write_filename, write_mode) as f:
         f.writelines(content)
     if is_web_link(filename):
-        import amazon_s3
+        from . import amazon_s3
         amazon_s3.upload_file(write_filename, remote_filename=filename)
         os.remove(write_filename)
     else:
-        print('Saved as ', filename)
+        print(('Saved as ', filename))
 
 
 def is_image_file(link):
@@ -235,13 +235,13 @@ def is_web_link(filename):
 
 
 def url_exists(url):
-    import urllib2
+    import urllib.request, urllib.error, urllib.parse
     try:
-        urllib2.urlopen(url)
+        urllib.request.urlopen(url)
         return True
-    except urllib2.HTTPError:
+    except urllib.error.HTTPError:
         return False
-    except urllib2.URLError:
+    except urllib.error.URLError:
         return False
 
 

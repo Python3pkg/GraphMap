@@ -1,7 +1,7 @@
-import cStringIO
+import io
 import random
 import time
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 from datetime import datetime
 
 
@@ -53,7 +53,7 @@ class AverageTimeStats:
         else:
             final_filename = filename
             header = ''
-        print('Appending to file {} end point {}'.format(final_filename, self.end_point))
+        print(('Appending to file {} end point {}'.format(final_filename, self.end_point)))
         with open(final_filename, 'a') as f:
             f.write(header)
             f.writelines(self.serialize_to_string())
@@ -62,7 +62,7 @@ class AverageTimeStats:
 
 def generate_multiple_random_tiles(count, max_lod):
     tile_list = []
-    for i in xrange(count):
+    for i in range(count):
         z = random.randint(0, max_lod)
         x = random.randint(0, 2 ** z)
         y = random.randint(0, 2 ** z)
@@ -88,8 +88,8 @@ class PerfTester:
         http_code = 200
         time_of_request = datetime.now()
         try:
-            tile_image_io = cStringIO.StringIO(urllib2.urlopen(url).read())
-        except urllib2.HTTPError as e:
+            tile_image_io = io.StringIO(urllib.request.urlopen(url).read())
+        except urllib.error.HTTPError as e:
             if e.code == 404:
                 http_code = 404
         end_time = time.time()
@@ -116,8 +116,8 @@ class PerfTester:
         return all_stats
 
     def perf_test_random_tiles(self, count, max_lod):
-        print('Testing random tiles for {} count, with end point {} and node link {}'
-              .format(count, self.end_point, self.node_link))
+        print(('Testing random tiles for {} count, with end point {} and node link {}'
+              .format(count, self.end_point, self.node_link)))
         tiles_to_hit = generate_multiple_random_tiles(count, max_lod)
         all_stats = self.perf_test_multiple_tiles(tiles_to_hit)
         return AverageTimeStats(all_stats, self.end_point)

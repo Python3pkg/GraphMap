@@ -1,5 +1,5 @@
-import imagetree
-from result import Result
+from . import imagetree
+from .result import Result
 
 
 class PersistenceInterface:

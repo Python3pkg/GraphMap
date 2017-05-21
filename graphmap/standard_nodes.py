@@ -1,4 +1,4 @@
-import imagetree
+from . import imagetree
 
 node_not_found_name = 'standard_nodes.not_found_node'
 default_grey_pixel = (128, 128, 128)

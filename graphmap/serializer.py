@@ -1,20 +1,20 @@
-from urllib2 import HTTPError
+from urllib.error import HTTPError
 
 from enum import Enum
 
-import custom_errors
-import imagetree
-import imagevalue
-import result
-import serialization.protbuf_serializer
-import serialization.tsv_serializer
-import standard_nodes
-import tile_disk_cache
-import tree_operator
-import treemap
-import utilities
-from graph_helpers import NodeLink
-from persistence_interface import PersistenceInterface
+from . import custom_errors
+from . import imagetree
+from . import imagevalue
+from . import result
+from . import serialization.protbuf_serializer
+from . import serialization.tsv_serializer
+from . import standard_nodes
+from . import tile_disk_cache
+from . import tree_operator
+from . import treemap
+from . import utilities
+from .graph_helpers import NodeLink
+from .persistence_interface import PersistenceInterface
 
 
 class FileType(Enum):
@@ -31,11 +31,11 @@ def compress_and_save(tree):
     :return:
     """
     original_node_count = tree.count_nodes()
-    print('Compressing tree, original number of nodes is ', original_node_count)
+    print(('Compressing tree, original number of nodes is ', original_node_count))
     tree.compress()
     final_node_count = tree.count_nodes()
-    print('Node count after compression is ', final_node_count, ' compression ratio is ',
-          float(final_node_count) / original_node_count)
+    print(('Node count after compression is ', final_node_count, ' compression ratio is ',
+          float(final_node_count) / original_node_count))
     save_tree(tree)
 
 
@@ -46,10 +46,10 @@ def save_tree(tree):
     :type tree: imagetree.ImageTree
     :rtype: None
     """
-    print('Saving tree ', tree.name)
+    print(('Saving tree ', tree.name))
     filename_nodename_node_dictionary = tree.create_node_dictionary()
-    for filename in filename_nodename_node_dictionary.iterkeys():
-        list_of_nodes = filename_nodename_node_dictionary[filename].itervalues()
+    for filename in filename_nodename_node_dictionary.keys():
+        list_of_nodes = iter(filename_nodename_node_dictionary[filename].values())
         save_tree_given_node_dictionary(filename, list_of_nodes)
 
 
@@ -81,9 +81,9 @@ def save_tree_only_filename(tree, filename):
     :type filename: str
     :rtype: None
     """
-    print('Saving tree ', tree.name, ' whose nodes belong to filename ', filename)
+    print(('Saving tree ', tree.name, ' whose nodes belong to filename ', filename))
     filename_nodename_node_dictionary = tree.create_node_dictionary()
-    list_of_nodes = filename_nodename_node_dictionary[filename].itervalues()
+    list_of_nodes = iter(filename_nodename_node_dictionary[filename].values())
     save_tree_given_node_dictionary(filename, list_of_nodes)
 
 
@@ -132,7 +132,7 @@ class Serializer(PersistenceInterface):
         if filename is None:
             return standard_nodes.not_found_node(self, filename='')
         if not filename in self.filename_treemap_map:
-            print('Loading node ', nodename_with_operator, ' from file ', filename)
+            print(('Loading node ', nodename_with_operator, ' from file ', filename))
             if serialized_string is None:
                 try:
                     serialized_string = utilities.get_contents_of_file(filename)
@@ -145,7 +145,7 @@ class Serializer(PersistenceInterface):
             unoperated_node = self.filename_treemap_map[filename].get_node(nodename)
             return tree_operator.apply_operators(unoperated_node, operators_list)
         else:
-            print('Node ', nodename, ' not found in file ', filename, ' returning not found blank node.')
+            print(('Node ', nodename, ' not found in file ', filename, ' returning not found blank node.'))
             return standard_nodes.not_found_node(serializer=self, filename=filename)
 
     def deserialize_string_to_tree_map(self, filename, serialized_string):

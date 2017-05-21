@@ -1,7 +1,7 @@
 import random
-import serializer
-import imagetree
-import constants
+from . import serializer
+from . import imagetree
+from . import constants
 
 
 class TreeGenerator:
